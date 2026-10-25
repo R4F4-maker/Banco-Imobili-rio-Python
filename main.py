@@ -125,31 +125,31 @@ while rodada <= 10:
 
     if casa in propriedades:
 
-    prop = propriedades[casa]
+        prop = propriedades[casa]
 
-    if prop["dono"] is None:
+        if prop["dono"] is None:
 
-        print("Esta propriedade pode ser comprada!")
+            print("Esta propriedade pode ser comprada!")
 
-        resposta = input(
-            "Deseja comprar? (s/n): "
-        )
+            resposta = input(
+                "Deseja comprar? (s/n): "
+            )
 
-        if resposta == "s":
+            if resposta == "s":
 
-            dinheiro -= prop["preco"]
+                dinheiro -= prop["preco"]
 
-            prop["dono"] = nome
+                prop["dono"] = nome
 
-            print("Propriedade comprada!")
+                print("Propriedade comprada!")
 
         else:
 
             print(
                 f"A propriedade pertence a "
                 f"{prop['dono']}"
-    )
-
+            )
+            
     print(f"Dinheiro atual: ${dinheiro}")
 
     print("\n--- VEZ DO BOT A ---")
@@ -165,6 +165,22 @@ while rodada <= 10:
         posicao_bot_a -= len(tabuleiro)
 
     print(f"Bot A parou em: {tabuleiro[posicao_bot_a]}")
+
+    casa_bot = tabuleiro[posicao_bot_a]
+
+if casa_bot in propriedades:
+
+    prop = propriedades[casa_bot]
+
+    if prop["dono"] == nome:
+
+        dinheiro += prop["aluguel"]
+
+        print(
+            f"Bot A pagou "
+            f"${prop['aluguel']} "
+            f"de aluguel!"
+        )
 
     rodada +=1
 
