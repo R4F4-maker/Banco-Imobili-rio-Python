@@ -1,5 +1,9 @@
 import random
 
+def jogar_dado():
+
+    return random.randint(1, 6)
+
 nome = input("Digite seu nome: ")
 
 dinheiro = 1500
@@ -43,7 +47,7 @@ while rodada <= 3:
 
     input("\nPrecione ENTER para jogar o dado")
 
-    dado = random.randint(1, 6)
+    dado = jogar_dado()
 
     print(f"Voçê tirou {dado}")
 
