@@ -82,6 +82,13 @@ cartas_sorte = [
     ("Pague $100", -100)
 ]
 
+cartas_cofre = [
+    ("Receba herança de $200", 200),
+    ("Receba restituição de $100", 100),
+    ("Pague multa de $50", -50),
+    ("Pague conserto da casa $100", -100)
+]
+
 propriedades = {
 
     "Avenida Mediterranea": {
@@ -183,6 +190,17 @@ while rodada <= 60:
 
         print(f"Novo saldo: ${dinheiro}")
 
+    if casa == "Cofre":
+
+        texto, valor = random.choice(cartas_cofre)
+
+        print("\nCARTA COFRE:")
+        print(texto)
+
+        dinheiro += valor
+
+        print(f"Novo saldo: ${dinheiro}")
+
     if casa in propriedades:
 
         prop = propriedades[casa]
@@ -202,24 +220,6 @@ while rodada <= 60:
                 prop["dono"] = nome
 
                 print("Propriedade comprada!")
-
-        elif prop["dono"] != bots[i]:
-
-            aluguel = prop["aluguel"]
-
-            dinheiro_bots[i] -= aluguel
-
-            for j in range(len(bots)):
-
-                if bots[j] == prop["dono"]:
-
-                    dinheiro_bots[j] += aluguel
-
-            print(
-                f"{bots[i]} pagou "
-                f"${aluguel} para "
-                f"{prop['dono']}!"
-            )
 
         else:
 
@@ -271,9 +271,40 @@ while rodada <= 60:
 
         print(f"{bots[i]} parou em: {casa_bot}")
 
+        if casa_bot == "Sorte":
+        
+            texto, valor = random.choice(cartas_sorte)
+        
+            print(f"\nCARTA SORTE DO {bots[i]}:")
+            print(texto)
+        
+            dinheiro_bots[i] += valor
+        
+            print(
+                f"Novo saldo do {bots[i]}: "
+                f"${dinheiro_bots[i]}"
+            )
+
+        if casa_bot == "Cofre":
+
+            texto, valor = random.choice(cartas_cofre)
+
+            print(f"\nCARTA COFRE DO {bots[i]}:")
+            print(texto)
+
+            dinheiro_bots[i] += valor
+
+            print(
+                f"Novo saldo do {bots[i]}: "
+                f"${dinheiro_bots[i]}"
+            )
+
+
         if casa_bot in propriedades:
 
             prop = propriedades[casa_bot]
+
+            
 
             if prop["dono"] is None:
 
@@ -297,6 +328,8 @@ while rodada <= 60:
 
                 dinheiro += aluguel
 
+                dinheiro_bots[i] -= aluguel
+
                 print(
                     f"{bots[i]} pagou "
                     f"${aluguel} de aluguel!"
@@ -307,6 +340,23 @@ while rodada <= 60:
                     f"${dinheiro}"
                 )
 
+            elif prop["dono"] != bots[i]:
+
+                aluguel = prop["aluguel"]
+
+                dinheiro_bots[i] -= aluguel
+
+                for j in range(len(bots)):
+
+                    if bots[j] == prop["dono"]:
+
+                        dinheiro_bots[j] += aluguel
+
+                print(
+                    f"{bots[i]} pagou "
+                    f"${aluguel} para "
+                    f"{prop['dono']}!"
+                )
     print("\n===== PLACAR =====")
 
     print(f"{nome}: ${dinheiro}")
