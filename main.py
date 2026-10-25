@@ -75,3 +75,18 @@ def mostrar_jogador(nome):
 mostrar_jogador("Israel")
 mostrar_jogador("Bot A")
 mostrar_jogador("Bot B")
+
+def somar(a, b):
+
+    return a + b
+
+resultado = somar(10, 5)
+
+print(resultado)
+
+rodada = 1 
+
+while rodada <= 3:
+    print(F"Rodada {rodada}")
+
+    rodada += 1
