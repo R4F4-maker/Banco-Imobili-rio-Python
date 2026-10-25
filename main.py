@@ -7,7 +7,9 @@ def jogar_dado():
 nome = input("Digite seu nome: ")
 
 dinheiro = 1500
+
 posicao = 0
+posicao_bot_a = 0
 
 print(f"Jogador: {nome}")
 print(f"Dinheiro: ${dinheiro}")
@@ -19,6 +21,8 @@ bots = [
     "Bot C",
     "Bot D",
 ]
+
+posicoes_bots = [0, 0, 0, 0]
 
 print("\nBots na partida:")
 
@@ -41,7 +45,7 @@ print(tabuleiro[posicao])
 
 rodada = 1
 
-while rodada <= 3:
+while rodada <= 10:
 
     print(f"\n===== RODADA {rodada} =====")
 
@@ -68,30 +72,20 @@ while rodada <= 3:
 
     print(f"Dinheiro atual: ${dinheiro}")
 
+    print("\n--- VEZ DO BOT A ---")
+
+    dado_bot = jogar_dado()
+
+    print(f"Bot A tirou {dado_bot}")
+
+    posicao_bot_a += dado_bot
+
+    if posicao_bot_a >= len(tabuleiro):
+
+        posicao_bot_a -= len(tabuleiro)
+
+    print(f"Bot A parou em: {tabuleiro[posicao_bot_a]}")
+
     rodada +=1
 
 print(f"\nTotal de casas: {len(tabuleiro)}")
-
-def mostrar_linha():
-
-    print("--------------------")
-
-mostrar_linha()
-print("MONOPOLY")
-mostrar_linha()
-
-def mostrar_jogador(nome):
-
-    print(f"Jogador: {nome}")
-
-mostrar_jogador("Israel")
-mostrar_jogador("Bot A")
-mostrar_jogador("Bot B")
-
-def somar(a, b):
-
-    return a + b
-
-resultado = somar(10, 5)
-
-print(resultado)
