@@ -12,7 +12,6 @@ if nome == "":
 dinheiro = 1500
 
 posicao = 0
-posicao_bot_a = 0
 
 print(f"Jogador: {nome}")
 print(f"Dinheiro: ${dinheiro}")
@@ -26,6 +25,7 @@ bots = [
 ]
 
 posicoes_bots = [0, 0, 0, 0]
+dinheiro_bots = [1500, 1500, 1500, 1500]
 
 print("\nBots na partida:")
 
@@ -73,6 +73,13 @@ tabuleiro = [
     "Praca Park Place",           # 37
     "Taxa de Luxo",               # 38
     "Calcadao Boardwalk"          # 39
+]
+
+cartas_sorte = [
+    ("Receba $100", 100),
+    ("Receba $50", 50),
+    ("Pague $50", -50),
+    ("Pague $100", -100)
 ]
 
 propriedades = {
@@ -129,6 +136,17 @@ while rodada <= 60:
 
     casa = tabuleiro[posicao]
 
+    if casa == "Sorte":
+
+        texto, valor = random.choice(cartas_sorte)
+
+        print("\nCARTA SORTE:")
+        print(texto)
+
+        dinheiro += valor
+
+        print(f"Novo saldo: ${dinheiro}")
+
     if casa in propriedades:
 
         prop = propriedades[casa]
@@ -139,16 +157,16 @@ while rodada <= 60:
 
             resposta = input(
                 "Deseja comprar? (s/n): "
-            )
+            ).lower()
 
-            if resposta == "s":
+            if resposta == "" or resposta == "s":
 
                 dinheiro -= prop["preco"]
 
                 prop["dono"] = nome
 
                 print("Propriedade comprada!")
-
+                
         else:
 
             print(
@@ -156,7 +174,7 @@ while rodada <= 60:
                 f"{prop['dono']}"
             )
 
-            if prop["dono"] == "Bot A":
+            if prop["dono"] != nome:
 
                 aluguel = prop["aluguel"]
 
@@ -165,7 +183,7 @@ while rodada <= 60:
                 print(
                     f"Você pagou "
                     f"${aluguel} "
-                    f"para o Bot A!"
+                    f"para {prop['dono']}!"
                 )
 
                 print(
@@ -175,43 +193,82 @@ while rodada <= 60:
 
     print(f"Dinheiro atual: ${dinheiro}")
 
-    print("\n--- VEZ DO BOT A ---")
+    for i in range(len(bots)):
 
-    dado_bot = jogar_dado()
+        print(f"\n--- VEZ DO {bots[i]} ---")
 
-    print(f"Bot A tirou {dado_bot}")
+        dado_bot = jogar_dado()
 
-    posicao_bot_a += dado_bot
+        print(f"{bots[i]} tirou {dado_bot}")
 
-    if posicao_bot_a >= len(tabuleiro):
+        posicoes_bots[i] += dado_bot
 
-        posicao_bot_a -= len(tabuleiro)
+        if posicoes_bots[i] >= len(tabuleiro):
 
-    print(
-        f"Bot A parou em: "
-        f"{tabuleiro[posicao_bot_a]}"
-    )
+            posicoes_bots[i] -= len(tabuleiro)
 
-    casa_bot = tabuleiro[posicao_bot_a]
+        casa_bot = tabuleiro[posicoes_bots[i]]
 
-    if casa_bot in propriedades:
+        print(f"{bots[i]} parou em: {casa_bot}")
 
-        prop = propriedades[casa_bot]
+        if casa_bot in propriedades:
 
-        if prop["dono"] is None:
+            prop = propriedades[casa_bot]
 
-            prop["dono"] = "Bot A"
+            if prop["dono"] is None:
 
-            print(f"Bot A comprou {casa_bot}")
+                prop["dono"] = bots[i]
 
-        elif prop["dono"] == nome:
+                dinheiro_bots[i] -= prop["preco"]
 
-            aluguel = prop["aluguel"]
+                print(
+                    f"{bots[i]} comprou "
+                    f"{casa_bot}"
+                )
 
-            dinheiro += aluguel
+                print(
+                    f"Saldo do {bots[i]}: "
+                    f"${dinheiro_bots[i]}"
+                )
 
-            print(f"Bot A pagou ${aluguel} de aluguel!")
-            print(f"Seu saldo agora é: ${dinheiro}")
+            elif prop["dono"] == nome:
+
+                aluguel = prop["aluguel"]
+
+                dinheiro += aluguel
+
+                print(
+                    f"{bots[i]} pagou "
+                    f"${aluguel} de aluguel!"
+                )
+
+                print(
+                    f"Seu saldo agora é "
+                    f"${dinheiro}"
+                )
+
+    print("\n===== PLACAR =====")
+
+    print(f"{nome}: ${dinheiro}")
+
+    for j in range(len(bots)):
+
+        print(
+            f"{bots[j]}: "
+            f"${dinheiro_bots[j]}"
+        )
+
+    if dinheiro <= 0:
+
+         print("\nVOCÊ FALIU!")
+         break
+
+    for j in range(len(bots)):
+
+        if dinheiro_bots[j] <= 0:
+
+            print(f"{bots[j]} FALIU!")
+
 
     print(f"Fim da rodada {rodada}")
 
