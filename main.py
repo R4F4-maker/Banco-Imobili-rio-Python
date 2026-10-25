@@ -40,3 +40,9 @@ input("\nPrecione ENTER para jogar o dado")
 dado = random.randint(1, 6)
 
 print(f"Voçê tirou {dado}")
+
+posicao = posicao + dado
+
+print(f"Nova posição: {posicao}")
+
+print(f"Voçê parou em: {tabuleiro[posicao]}")
