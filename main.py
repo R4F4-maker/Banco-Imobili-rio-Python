@@ -43,6 +43,35 @@ print(f"Voçê tirou {dado}")
 
 posicao = posicao + dado
 
+if posicao >=len(tabuleiro):
+
+    posicao = posicao - len(tabuleiro)
+
+    dinheiro = dinheiro + 200
+
+    print("Você passou pela partida!")
+    print("Você ganhou $200!")
+
 print(f"Nova posição: {posicao}")
 
 print(f"Voçê parou em: {tabuleiro[posicao]}")
+
+print(f"Dinheiro atual: ${dinheiro}")
+
+print(f"\nTotal de casas: {len(tabuleiro)}")
+
+def mostrar_linha():
+
+    print("--------------------")
+
+mostrar_linha()
+print("MONOPOLY")
+mostrar_linha()
+
+def mostrar_jogador(nome):
+
+    print(f"Jogador: {nome}")
+
+mostrar_jogador("Israel")
+mostrar_jogador("Bot A")
+mostrar_jogador("Bot B")
