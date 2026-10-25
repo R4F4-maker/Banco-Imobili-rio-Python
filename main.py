@@ -6,6 +6,9 @@ def jogar_dado():
 
 nome = input("Digite seu nome: ")
 
+if nome == "":
+    nome = "Jogador"
+
 dinheiro = 1500
 
 posicao = 0
@@ -99,8 +102,6 @@ print(tabuleiro[posicao])
 
 rodada = 1
 
-rodada = 1
-
 while rodada <= 60:
 
     print(f"\n===== RODADA {rodada} =====")
@@ -155,6 +156,23 @@ while rodada <= 60:
                 f"{prop['dono']}"
             )
 
+            if prop["dono"] == "Bot A":
+
+                aluguel = prop["aluguel"]
+
+                dinheiro -= aluguel
+
+                print(
+                    f"Você pagou "
+                    f"${aluguel} "
+                    f"para o Bot A!"
+                )
+
+                print(
+                    f"Seu saldo agora é "
+                    f"${dinheiro}"
+                )
+
     print(f"Dinheiro atual: ${dinheiro}")
 
     print("\n--- VEZ DO BOT A ---")
@@ -180,20 +198,23 @@ while rodada <= 60:
 
         prop = propriedades[casa_bot]
 
-        if prop["dono"] == nome:
+        if prop["dono"] is None:
 
-            print(
-                f"Bot A pagou "
-                f"${prop['aluguel']} "
-                f"de aluguel!"
-            )
+            prop["dono"] = "Bot A"
 
-            dinheiro += prop["aluguel"]
+            print(f"Bot A comprou {casa_bot}")
+
+        elif prop["dono"] == nome:
+
+            aluguel = prop["aluguel"]
+
+            dinheiro += aluguel
+
+            print(f"Bot A pagou ${aluguel} de aluguel!")
+            print(f"Seu saldo agora é: ${dinheiro}")
 
     print(f"Fim da rodada {rodada}")
 
     rodada += 1
-
-rodada +=1
 
 print(f"\nTotal de casas: {len(tabuleiro)}")
