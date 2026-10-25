@@ -83,6 +83,7 @@ cartas_sorte = [
 ]
 
 propriedades = {
+
     "Avenida Mediterranea": {
         "preco": 60,
         "aluguel": 10,
@@ -99,9 +100,44 @@ propriedades = {
         "preco": 100,
         "aluguel": 30,
         "dono": None
+    },
+
+    "Avenida Vermont": {
+        "preco": 100,
+        "aluguel": 30,
+        "dono": None
+    },
+
+    "Avenida Connecticut": {
+        "preco": 120,
+        "aluguel": 40,
+        "dono": None
+    },
+
+    "Avenida dos Estados": {
+        "preco": 140,
+        "aluguel": 50,
+        "dono": None
+    },
+
+    "Avenida Virginia": {
+        "preco": 160,
+        "aluguel": 60,
+        "dono": None
+    },
+
+    "Avenida Tennessee": {
+        "preco": 180,
+        "aluguel": 70,
+        "dono": None
+    },
+
+    "Avenida Nova York": {
+        "preco": 200,
+        "aluguel": 80,
+        "dono": None
     }
 }
-
 print(f"Você parou em: {tabuleiro[posicao]}")
 
 print("\nCasa atual:")
@@ -166,7 +202,25 @@ while rodada <= 60:
                 prop["dono"] = nome
 
                 print("Propriedade comprada!")
-                
+
+        elif prop["dono"] != bots[i]:
+
+            aluguel = prop["aluguel"]
+
+            dinheiro_bots[i] -= aluguel
+
+            for j in range(len(bots)):
+
+                if bots[j] == prop["dono"]:
+
+                    dinheiro_bots[j] += aluguel
+
+            print(
+                f"{bots[i]} pagou "
+                f"${aluguel} para "
+                f"{prop['dono']}!"
+            )
+
         else:
 
             print(
@@ -179,6 +233,12 @@ while rodada <= 60:
                 aluguel = prop["aluguel"]
 
                 dinheiro -= aluguel
+
+                for j in range(len(bots)):
+
+                    if bots[j] == prop["dono"]:
+
+                        dinheiro_bots[j] += aluguel
 
                 print(
                     f"Você pagou "
