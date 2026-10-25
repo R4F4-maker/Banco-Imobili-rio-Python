@@ -30,14 +30,46 @@ for bot in bots:
     print(bot)
 
 tabuleiro = [
-        "Partida",
-    "Rua Oscar Freire",
-    "Sorte",
-    "Avenida Paulista",
-    "Prisão",
-    "Copacabana",
-    "Cofre",
-    "Ipanema"
+    "Partida",                    # 0
+    "Avenida Mediterranea",       # 1
+    "Cofre",                      # 2
+    "Avenida Baltica",            # 3
+    "Imposto de Renda",           # 4
+    "Ferrovia Reading",           # 5
+    "Avenida Oriental",           # 6
+    "Sorte",                      # 7
+    "Avenida Vermont",            # 8
+    "Avenida Connecticut",        # 9
+    "Prisao",                     # 10
+    "Praca St. Charles",          # 11
+    "Companhia Eletrica",         # 12
+    "Avenida dos Estados",        # 13
+    "Avenida Virginia",           # 14
+    "Ferrovia Pennsylvania",      # 15
+    "Praca St. James",            # 16
+    "Cofre",                      # 17
+    "Avenida Tennessee",          # 18
+    "Avenida Nova York",          # 19
+    "Estacionamento Livre",       # 20
+    "Avenida Kentucky",           # 21
+    "Sorte",                      # 22
+    "Avenida Indiana",            # 23
+    "Avenida Illinois",           # 24
+    "Ferrovia B&O",              # 25
+    "Avenida Atlantica",          # 26
+    "Avenida Ventnor",            # 27
+    "Companhia de Agua",          # 28
+    "Jardins Marvin",             # 29
+    "Vá para a Prisao",           # 30
+    "Avenida Pacifica",           # 31
+    "Avenida Carolina do Norte",  # 32
+    "Cofre",                      # 33
+    "Avenida Pennsylvania",       # 34
+    "Ferrovia Short Line",        # 35
+    "Sorte",                      # 36
+    "Praca Park Place",           # 37
+    "Taxa de Luxo",               # 38
+    "Calcadao Boardwalk"          # 39
 ]
 
 print("\nCasa atual:")
