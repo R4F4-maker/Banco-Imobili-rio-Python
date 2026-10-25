@@ -1,5 +1,24 @@
 import random
 
+import random
+
+nomes_disponiveis = [
+    "Lucas", "Gabriel", "Pedro", "Miguel", "Arthur",
+    "Ana", "Maria", "Julia", "Beatriz", "Larissa",
+    "Camila", "Fernanda", "Amanda", "Isabela", "Helena",
+    "Rodrigo", "Victor", "Eduardo", "Alan", "Diego",
+    "Bruno", "Rafael", "Matheus", "Gustavo", "Felipe",
+    "Clara", "Manuela", "Valentina", "Alice", "Laura",
+    "Sophia", "Yasmin", "Lívia", "Bianca", "Melissa",
+    "Paulo", "Carlos", "Ricardo", "Marcelo", "André",
+    "Thiago", "Daniel", "Caio", "Igor", "Murilo",
+    "Nicolas", "Samuel", "Benjamin", "Lorenzo", "Enzo"
+]
+
+bots = random.sample(nomes_disponiveis, 4)
+
+
+
 def jogar_dado():
 
     return random.randint(1, 6)
@@ -17,15 +36,8 @@ print(f"Jogador: {nome}")
 print(f"Dinheiro: ${dinheiro}")
 print(f"Posição: {posicao}")
 
-bots = [
-    "Bot A",
-    "Bot B",
-    "Bot C",
-    "Bot D",
-]
-
 posicoes_bots = [0, 0, 0, 0]
-dinheiro_bots = [1500, 1500, 1500, 1500]
+dinheiro_bots = [500, 500, 500, 500]
 
 print("\nBots na partida:")
 
@@ -152,7 +164,7 @@ print(tabuleiro[posicao])
 
 rodada = 1
 
-while rodada <= 60:
+while rodada <= 200:
 
     print(f"\n===== RODADA {rodada} =====")
 
@@ -200,6 +212,42 @@ while rodada <= 60:
         dinheiro += valor
 
         print(f"Novo saldo: ${dinheiro}")
+
+    if casa == "Imposto de Renda":
+
+        dinheiro -= 200
+
+        print(
+            "\nVocê pagou "
+            "$200 de Imposto de Renda!"
+        )
+
+        print(
+            f"Novo saldo: "
+            f"${dinheiro}"
+        )
+
+    if casa == "Taxa de Luxo":
+
+        dinheiro -= 100
+
+        print(
+            "\nVocê pagou "
+            "$100 de Taxa de Luxo!"
+        )
+
+        print(
+            f"Novo saldo: "
+            f"${dinheiro}"
+        )
+
+    if casa == "Vá para a Prisao":
+
+        posicao = 10
+
+        print(
+            "\nVocê foi para a Prisão!"
+        )
 
     if casa in propriedades:
 
@@ -255,6 +303,9 @@ while rodada <= 60:
 
     for i in range(len(bots)):
 
+        if dinheiro_bots[i] <= 0:
+            continue
+
         print(f"\n--- VEZ DO {bots[i]} ---")
 
         dado_bot = jogar_dado()
@@ -299,6 +350,32 @@ while rodada <= 60:
                 f"${dinheiro_bots[i]}"
             )
 
+        if casa_bot == "Imposto de Renda":
+
+            dinheiro_bots[i] -= 200
+
+            print(
+                f"{bots[i]} pagou "
+                f"$200 de imposto!"
+            )
+
+        if casa_bot == "Taxa de Luxo":
+
+            dinheiro_bots[i] -= 100
+
+            print(
+                f"{bots[i]} pagou "
+                f"$100 de taxa de luxo!"
+            )
+
+        if casa_bot == "Vá para a Prisao":
+
+            posicoes_bots[i] = 10
+
+            print(
+                f"{bots[i]} foi para a Prisão!"
+            )
+
 
         if casa_bot in propriedades:
 
@@ -340,7 +417,7 @@ while rodada <= 60:
                     f"${dinheiro}"
                 )
 
-            elif prop["dono"] != bots[i]:
+            elif prop["dono"] != nome and prop["dono"] != bots[i]:
 
                 aluguel = prop["aluguel"]
 
@@ -357,27 +434,32 @@ while rodada <= 60:
                     f"${aluguel} para "
                     f"{prop['dono']}!"
                 )
+
+
     print("\n===== PLACAR =====")
 
     print(f"{nome}: ${dinheiro}")
 
     for j in range(len(bots)):
 
-        print(
-            f"{bots[j]}: "
-            f"${dinheiro_bots[j]}"
-        )
-
-    if dinheiro <= 0:
-
-         print("\nVOCÊ FALIU!")
-         break
-
-    for j in range(len(bots)):
-
         if dinheiro_bots[j] <= 0:
 
-            print(f"{bots[j]} FALIU!")
+            print(f"{bots[j]}: FALIU!")
+
+            for nome_prop in propriedades:
+
+                if propriedades[nome_prop]["dono"] == bots[j]:
+
+                    propriedades[nome_prop]["dono"] = None
+
+            dinheiro_bots[j] = -999999
+
+        else:
+
+            print(
+                f"{bots[j]}: "
+                f"${dinheiro_bots[j]}"
+            )
 
 
     print(f"Fim da rodada {rodada}")
