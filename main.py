@@ -75,16 +75,19 @@ tabuleiro = [
 propriedades = {
     "Avenida Mediterranea": {
         "preco": 60,
+        "aluguel": 10,
         "dono": None
     },
 
     "Avenida Baltica": {
         "preco": 60,
+        "aluguel": 20,
         "dono": None
     },
 
     "Avenida Oriental": {
         "preco": 100,
+        "aluguel": 30,
         "dono": None
     }
 }
@@ -96,30 +99,32 @@ print(tabuleiro[posicao])
 
 rodada = 1
 
-while rodada <= 10:
+rodada = 1
+
+while rodada <= 60:
 
     print(f"\n===== RODADA {rodada} =====")
 
-    input("\nPrecione ENTER para jogar o dado")
+    input("\nPressione ENTER para jogar o dado")
 
     dado = jogar_dado()
 
-    print(f"Voçê tirou {dado}")
+    print(f"Você tirou {dado}")
 
-    posicao = posicao + dado
+    posicao += dado
 
-    if posicao >=len(tabuleiro):
+    if posicao >= len(tabuleiro):
 
-        posicao = posicao - len(tabuleiro)
+        posicao -= len(tabuleiro)
 
-        dinheiro = dinheiro + 200
+        dinheiro += 200
 
         print("Você passou pela partida!")
         print("Você ganhou $200!")
 
     print(f"Nova posição: {posicao}")
 
-    print(f"Voçê parou em: {tabuleiro[posicao]}")
+    print(f"Você parou em: {tabuleiro[posicao]}")
 
     casa = tabuleiro[posicao]
 
@@ -149,7 +154,7 @@ while rodada <= 10:
                 f"A propriedade pertence a "
                 f"{prop['dono']}"
             )
-            
+
     print(f"Dinheiro atual: ${dinheiro}")
 
     print("\n--- VEZ DO BOT A ---")
@@ -164,24 +169,31 @@ while rodada <= 10:
 
         posicao_bot_a -= len(tabuleiro)
 
-    print(f"Bot A parou em: {tabuleiro[posicao_bot_a]}")
+    print(
+        f"Bot A parou em: "
+        f"{tabuleiro[posicao_bot_a]}"
+    )
 
     casa_bot = tabuleiro[posicao_bot_a]
 
-if casa_bot in propriedades:
+    if casa_bot in propriedades:
 
-    prop = propriedades[casa_bot]
+        prop = propriedades[casa_bot]
 
-    if prop["dono"] == nome:
+        if prop["dono"] == nome:
 
-        dinheiro += prop["aluguel"]
+            print(
+                f"Bot A pagou "
+                f"${prop['aluguel']} "
+                f"de aluguel!"
+            )
 
-        print(
-            f"Bot A pagou "
-            f"${prop['aluguel']} "
-            f"de aluguel!"
-        )
+            dinheiro += prop["aluguel"]
 
-    rodada +=1
+    print(f"Fim da rodada {rodada}")
+
+    rodada += 1
+
+rodada +=1
 
 print(f"\nTotal de casas: {len(tabuleiro)}")
