@@ -35,28 +35,36 @@ tabuleiro = [
 print("\nCasa atual:")
 print(tabuleiro[posicao])
 
-input("\nPrecione ENTER para jogar o dado")
+rodada = 1
 
-dado = random.randint(1, 6)
+while rodada <= 3:
 
-print(f"Voçê tirou {dado}")
+    print(f"\n===== RODADA {rodada} =====")
 
-posicao = posicao + dado
+    input("\nPrecione ENTER para jogar o dado")
 
-if posicao >=len(tabuleiro):
+    dado = random.randint(1, 6)
 
-    posicao = posicao - len(tabuleiro)
+    print(f"Voçê tirou {dado}")
 
-    dinheiro = dinheiro + 200
+    posicao = posicao + dado
 
-    print("Você passou pela partida!")
-    print("Você ganhou $200!")
+    if posicao >=len(tabuleiro):
 
-print(f"Nova posição: {posicao}")
+        posicao = posicao - len(tabuleiro)
 
-print(f"Voçê parou em: {tabuleiro[posicao]}")
+        dinheiro = dinheiro + 200
 
-print(f"Dinheiro atual: ${dinheiro}")
+        print("Você passou pela partida!")
+        print("Você ganhou $200!")
+
+    print(f"Nova posição: {posicao}")
+
+    print(f"Voçê parou em: {tabuleiro[posicao]}")
+
+    print(f"Dinheiro atual: ${dinheiro}")
+
+    rodada +=1
 
 print(f"\nTotal de casas: {len(tabuleiro)}")
 
@@ -83,10 +91,3 @@ def somar(a, b):
 resultado = somar(10, 5)
 
 print(resultado)
-
-rodada = 1 
-
-while rodada <= 3:
-    print(F"Rodada {rodada}")
-
-    rodada += 1
