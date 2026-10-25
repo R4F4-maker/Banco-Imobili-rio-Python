@@ -72,6 +72,25 @@ tabuleiro = [
     "Calcadao Boardwalk"          # 39
 ]
 
+propriedades = {
+    "Avenida Mediterranea": {
+        "preco": 60,
+        "dono": None
+    },
+
+    "Avenida Baltica": {
+        "preco": 60,
+        "dono": None
+    },
+
+    "Avenida Oriental": {
+        "preco": 100,
+        "dono": None
+    }
+}
+
+print(f"Você parou em: {tabuleiro[posicao]}")
+
 print("\nCasa atual:")
 print(tabuleiro[posicao])
 
@@ -101,6 +120,35 @@ while rodada <= 10:
     print(f"Nova posição: {posicao}")
 
     print(f"Voçê parou em: {tabuleiro[posicao]}")
+
+    casa = tabuleiro[posicao]
+
+    if casa in propriedades:
+
+    prop = propriedades[casa]
+
+    if prop["dono"] is None:
+
+        print("Esta propriedade pode ser comprada!")
+
+        resposta = input(
+            "Deseja comprar? (s/n): "
+        )
+
+        if resposta == "s":
+
+            dinheiro -= prop["preco"]
+
+            prop["dono"] = nome
+
+            print("Propriedade comprada!")
+
+        else:
+
+            print(
+                f"A propriedade pertence a "
+                f"{prop['dono']}"
+    )
 
     print(f"Dinheiro atual: ${dinheiro}")
 
