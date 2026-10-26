@@ -36,8 +36,8 @@ nome = input("Digite seu nome: ")
 if nome == "":
     nome = "Jogador"
 
-dinheiro = 1500
-#dinheiro = 500
+#dinheiro = 1500
+dinheiro = 500
 
 posicao = 0
 
@@ -47,8 +47,8 @@ print(f"Posição: {posicao}")
 
 posicoes_bots = [0, 0, 0, 0]
 preso_bots = [0, 0, 0, 0]
-#dinheiro_bots = [1500, 1500, 1500, 1500]
-dinheiro_bots = [500, 500, 500, 500]
+dinheiro_bots = [1500, 1500, 1500, 1500]
+#dinheiro_bots = [500, 500, 500, 500]
 
 print("\nBots na partida:")
 
@@ -287,11 +287,11 @@ rodada = 1
 
 while rodada <= 200:
 
+    print(f"\n===== RODADA {rodada} =====")
+
     if rodadas_preso > 0:
 
-        print(
-            f"\nVocê está preso!"
-        )
+        print("\nVocê está preso!")
 
         print(
             f"Rodadas restantes: "
@@ -304,23 +304,28 @@ while rodada <= 200:
 
         continue
 
-    if dinheiro <= 0:
+    else:
 
-        print("\n====================")
-        print(f"{nome} FALIU!")
-        print("====================")
+        input("\nPressione ENTER para jogar o dado")
 
-        break
+        dado = jogar_dado()
 
-    print(f"\n===== RODADA {rodada} =====")
+        print(f"Você tirou {dado}")
 
-    input("\nPressione ENTER para jogar o dado")
+        posicao += dado
 
-    dado = jogar_dado()
+        if posicao >= len(tabuleiro):
 
-    print(f"Você tirou {dado}")
+            posicao -= len(tabuleiro)
 
-    posicao += dado
+            dinheiro += 200
+
+            print("Você passou pela partida!")
+            print("Você ganhou $200!")
+
+        print(f"Nova posição: {posicao}")
+
+        print(f"Você parou em: {tabuleiro[posicao]}")
 
     if posicao >= len(tabuleiro):
 
@@ -331,9 +336,9 @@ while rodada <= 200:
         print("Você passou pela partida!")
         print("Você ganhou $200!")
 
-    print(f"Nova posição: {posicao}")
+        print(f"Nova posição: {posicao}")
 
-    print(f"Você parou em: {tabuleiro[posicao]}")
+        print(f"Você parou em: {tabuleiro[posicao]}")
 
     casa = tabuleiro[posicao]
 
