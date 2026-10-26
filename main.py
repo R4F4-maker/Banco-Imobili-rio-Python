@@ -6,7 +6,8 @@ from funcoes import (
     carta_sorte,
     carta_cofre,
     cobrar_taxa,
-    decidir_compra
+    decidir_compra,
+    tentativa_prisao
 )
 
 nomes_disponiveis = [
@@ -46,6 +47,7 @@ dinheiro = 500
 
 posicao = 0
 rodadas_preso = 2
+tentativas_prisao = 0
 
 print(f"Jogador: {nome}")
 print(f"Dinheiro: ${dinheiro}")
@@ -297,16 +299,16 @@ while rodada <= 200:
 
     if rodadas_preso > 0:
 
-        print("\nVocê está preso!")
-
-        print(
-            f"Rodadas restantes: "
-            f"{rodadas_preso}"
+        (
+            rodadas_preso,
+            tentativas_prisao,
+            dinheiro
+        ) = tentativa_prisao(
+            rodadas_preso,
+            tentativas_prisao,
+            dinheiro
         )
 
-        rodadas_preso -= 1
-
-        jogador_joga = False
 
     else:
 
@@ -363,123 +365,125 @@ while rodada <= 200:
 
     casa = tabuleiro[posicao]
 
-    if casa == "Sorte":
-        dinheiro = carta_sorte(
-            dinheiro,
-            cartas_sorte
-        )
+    if jogador_joga:  
 
-    if casa == "Cofre":
-        dinheiro = carta_cofre(
-            dinheiro,
-            cartas_cofre
-        )
-
-    if casa == "Imposto de Renda":
-        dinheiro = cobrar_taxa(
-            dinheiro,
-            200,
-            "Imposto de Renda"
-        )
-
-    if casa == "Taxa de Luxo":
-        dinheiro = cobrar_taxa(
-            dinheiro,
-            100,
-            "Taxa de Luxo"
-        )
-
-    if casa == "Prisao" or casa == "Vá para a Prisao":
-
-        resultado = random.choice(
-            ["visita", "preso"]
-        )
-
-        if resultado == "visita":
-
-            print(
-                "\nApenas visitando a prisão."
+        if casa == "Sorte":
+            dinheiro = carta_sorte(
+                dinheiro,
+                cartas_sorte
             )
 
-        else:
-
-            posicao = 10
-
-            rodadas_preso = 2
-
-            print(
-                "\nVocê foi PRESO!"
+        if casa == "Cofre":
+            dinheiro = carta_cofre(
+                dinheiro,
+                cartas_cofre
             )
 
-            print(
-                "Ficará 2 rodadas sem jogar."
+        if casa == "Imposto de Renda":
+            dinheiro = cobrar_taxa(
+                dinheiro,
+                200,
+                "Imposto de Renda"
             )
 
-    if casa in propriedades:
-
-        prop = propriedades[casa]
-
-        if prop["dono"] is None:
-
-            print("\n===== PROPRIEDADE =====")
-
-            print(f"Nome: {casa}")
-
-            print(f"Preço: ${prop['preco']}")
-
-            print(f"Aluguel: ${prop['aluguel']}")
-
-            print(f"Saldo atual: ${dinheiro}")
-
-            resposta = input(
-                "Deseja comprar? (s/n): "
-            ).lower()
-
-            if resposta == "" or resposta == "s":
-
-                if dinheiro >= prop["preco"]:
-
-                    dinheiro -= prop["preco"]
-
-                    prop["dono"] = nome
-
-                    print("Propriedade comprada!")
-
-                else:
-
-                    print("Dinheiro insuficiente!")
-
-        else:
-
-            print(
-                f"A propriedade pertence a "
-                f"{prop['dono']}"
+        if casa == "Taxa de Luxo":
+            dinheiro = cobrar_taxa(
+                dinheiro,
+                100,
+                "Taxa de Luxo"
             )
 
-            if prop["dono"] != nome:
+        if casa == "Prisao" or casa == "Vá para a Prisao":
 
-                aluguel = prop["aluguel"]
+            resultado = random.choice(
+                ["visita", "preso"]
+            )
 
-                dinheiro -= aluguel
-
-                for j in range(len(bots)):
-
-                    if bots[j] == prop["dono"]:
-
-                        dinheiro_bots[j] += aluguel
+            if resultado == "visita":
 
                 print(
-                    f"Você pagou "
-                    f"${aluguel} "
-                    f"para {prop['dono']}!"
+                    "\nApenas visitando a prisão."
+                )
+
+            else:
+
+                posicao = 10
+
+                rodadas_preso = 2
+
+                print(
+                    "\nVocê foi PRESO!"
                 )
 
                 print(
-                    f"Seu saldo agora é "
-                    f"${dinheiro}"
+                    "Ficará 2 rodadas sem jogar."
                 )
 
-    print(f"Dinheiro atual: ${dinheiro}")
+        if casa in propriedades:
+
+            prop = propriedades[casa]
+
+            if prop["dono"] is None:
+
+                print("\n===== PROPRIEDADE =====")
+
+                print(f"Nome: {casa}")
+
+                print(f"Preço: ${prop['preco']}")
+
+                print(f"Aluguel: ${prop['aluguel']}")
+
+                print(f"Saldo atual: ${dinheiro}")
+
+                resposta = input(
+                    "Deseja comprar? (s/n): "
+                ).lower()
+
+                if resposta == "" or resposta == "s":
+
+                    if dinheiro >= prop["preco"]:
+
+                        dinheiro -= prop["preco"]
+
+                        prop["dono"] = nome
+
+                        print("Propriedade comprada!")
+
+                    else:
+
+                        print("Dinheiro insuficiente!")
+
+            else:
+
+                print(
+                    f"A propriedade pertence a "
+                    f"{prop['dono']}"
+                )
+
+                if prop["dono"] != nome:
+
+                    aluguel = prop["aluguel"]
+
+                    dinheiro -= aluguel
+
+                    for j in range(len(bots)):
+
+                        if bots[j] == prop["dono"]:
+
+                            dinheiro_bots[j] += aluguel
+
+                    print(
+                        f"Você pagou "
+                        f"${aluguel} "
+                        f"para {prop['dono']}!"
+                    )
+
+                    print(
+                        f"Seu saldo agora é "
+                        f"${dinheiro}"
+                    )
+
+        print(f"Dinheiro atual: ${dinheiro}")
 
     for i in range(len(bots)):
 

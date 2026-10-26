@@ -106,3 +106,65 @@ def cobrar_taxa(dinheiro, valor, nome_taxa):
 
     return dinheiro
 
+def tentativa_prisao(
+    rodadas_preso,
+    tentativas_prisao,
+    dinheiro
+):
+
+    tentativas_prisao += 1
+
+    print("\nVocê está preso!")
+
+    print(
+        f"Tentativa "
+        f"{tentativas_prisao} de 3"
+    )
+
+    dado1 = random.randint(1, 6)
+    dado2 = random.randint(1, 6)
+
+    print(
+        f"Você tirou "
+        f"{dado1} e {dado2}"
+    )
+
+    if dado1 == dado2:
+
+        print(
+            "\nDADOS IGUAIS!"
+        )
+
+        print(
+            "Você saiu da prisão!"
+        )
+
+        rodadas_preso = 0
+        tentativas_prisao = 0
+
+    else:
+
+        print(
+            "Você continua preso."
+        )
+
+        if tentativas_prisao >= 3:
+
+            dinheiro -= 50
+
+            print(
+                "\nVocê pagou $50 de fiança."
+            )
+
+            print(
+                "Você saiu da prisão."
+            )
+
+            rodadas_preso = 0
+            tentativas_prisao = 0
+
+    return (
+        rodadas_preso,
+        tentativas_prisao,
+        dinheiro
+    )
