@@ -24,12 +24,17 @@ nomes_disponiveis = [
 
 bots = random.sample(nomes_disponiveis, 4)
 
-tipos_bots = [
+tipos_disponiveis = [
     "louco",
     "investidor",
     "aleatorio",
     "equilibrado"
 ]
+
+tipos_bots = random.choices(
+    tipos_disponiveis,
+    k=4
+)
 
 nome = input("Digite seu nome: ")
 
@@ -40,6 +45,7 @@ if nome == "":
 dinheiro = 500
 
 posicao = 0
+rodadas_preso = 0
 
 print(f"Jogador: {nome}")
 print(f"Dinheiro: ${dinheiro}")
@@ -281,13 +287,13 @@ print(f"Você parou em: {tabuleiro[posicao]}")
 print("\nCasa atual:")
 print(tabuleiro[posicao])
 
-rodadas_preso = 0
-
 rodada = 1
 
 while rodada <= 200:
 
     print(f"\n===== RODADA {rodada} =====")
+
+    jogador_joga = True
 
     if rodadas_preso > 0:
 
@@ -300,19 +306,34 @@ while rodada <= 200:
 
         rodadas_preso -= 1
 
-        rodada += 1
-
-        continue
+        jogador_joga = False
 
     else:
 
-        input("\nPressione ENTER para jogar o dado")
+        if jogador_joga:
 
-        dado = jogar_dado()
+            input("\nPressione ENTER para jogar o dado")
 
-        print(f"Você tirou {dado}")
+            dado1, dado2 = jogar_dado()
 
-        posicao += dado
+            dado = dado1 + dado2
+
+            print(
+                f"Você tirou "
+                f"{dado1} e {dado2}"
+            )
+
+            print(
+                f"Total: {dado}"
+            )
+
+            if dado1 == dado2:
+
+                print(
+                    "DADOS IGUAIS!"
+                )
+
+            posicao += dado
 
         if posicao >= len(tabuleiro):
 
@@ -478,9 +499,24 @@ while rodada <= 200:
 
         print(f"\n--- Vez de {bots[i]} ---")
 
-        dado_bot = jogar_dado()
+        dado1, dado2 = jogar_dado()
 
-        print(f"{bots[i]} tirou {dado_bot}")
+        dado_bot = dado1 + dado2
+
+        print(
+            f"{bots[i]} tirou "
+            f"{dado1} e {dado2}"
+        )
+
+        print(
+            f"Total: {dado_bot}"
+        )
+
+        if dado1 == dado2:
+
+            print(
+                "DADOS IGUAIS!"
+            )
 
         posicoes_bots[i] += dado_bot
 
