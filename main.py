@@ -1,6 +1,6 @@
 import random
 
-from funcoes import jogar_dado
+from funcoes import jogar_dado, mostrar_placar
 
 nomes_disponiveis = [
     "Lucas", "Gabriel", "Pedro", "Miguel", "Arthur",
@@ -439,31 +439,13 @@ while rodada <= 200:
                     f"{prop['dono']}!"
                 )
 
-
-    print("\n===== PLACAR =====")
-
-    print(f"{nome}: ${dinheiro}")
-
-    for j in range(len(bots)):
-
-        if dinheiro_bots[j] <= 0:
-
-            print(f"{bots[j]}: FALIU!")
-
-            for nome_prop in propriedades:
-
-                if propriedades[nome_prop]["dono"] == bots[j]:
-
-                    propriedades[nome_prop]["dono"] = None
-
-            dinheiro_bots[j] = -999999
-
-        else:
-
-            print(
-                f"{bots[j]}: "
-                f"${dinheiro_bots[j]}"
-            )
+    mostrar_placar(
+    nome,
+    dinheiro,
+    bots,
+    dinheiro_bots,
+    propriedades
+)
 
 
     print(f"Fim da rodada {rodada}")
