@@ -45,7 +45,7 @@ if nome == "":
 dinheiro = 500
 
 posicao = 0
-rodadas_preso = 0
+rodadas_preso = 2
 
 print(f"Jogador: {nome}")
 print(f"Dinheiro: ${dinheiro}")
