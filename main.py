@@ -1,6 +1,6 @@
 import random
 
-import random
+from funcoes import jogar_dado
 
 nomes_disponiveis = [
     "Lucas", "Gabriel", "Pedro", "Miguel", "Arthur",
@@ -16,12 +16,6 @@ nomes_disponiveis = [
 ]
 
 bots = random.sample(nomes_disponiveis, 4)
-
-
-
-def jogar_dado():
-
-    return random.randint(1, 6)
 
 nome = input("Digite seu nome: ")
 
@@ -385,19 +379,29 @@ while rodada <= 200:
 
             if prop["dono"] is None:
 
-                prop["dono"] = bots[i]
+                if dinheiro_bots[i] >= prop["preco"]:
 
-                dinheiro_bots[i] -= prop["preco"]
+                    prop["dono"] = bots[i]
 
-                print(
-                    f"{bots[i]} comprou "
-                    f"{casa_bot}"
-                )
+                    dinheiro_bots[i] -= prop["preco"]
 
-                print(
-                    f"Saldo do {bots[i]}: "
-                    f"${dinheiro_bots[i]}"
-                )
+                    print(
+                        f"{bots[i]} comprou "
+                        f"{casa_bot}"
+                    )
+
+                    print(
+                        f"Saldo do {bots[i]}: "
+                        f"${dinheiro_bots[i]}"
+                    )
+
+                else:
+
+                    print(
+                        f"{bots[i]} não tem dinheiro "
+                        f"para comprar {casa_bot}"
+                    )
+
 
             elif prop["dono"] == nome:
 
