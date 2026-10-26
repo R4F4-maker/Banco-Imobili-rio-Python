@@ -37,6 +37,7 @@ if nome == "":
     nome = "Jogador"
 
 dinheiro = 1500
+#dinheiro = 500
 
 posicao = 0
 
@@ -45,7 +46,9 @@ print(f"Dinheiro: ${dinheiro}")
 print(f"Posição: {posicao}")
 
 posicoes_bots = [0, 0, 0, 0]
-dinheiro_bots = [1500, 1500, 1500, 1500]
+preso_bots = [0, 0, 0, 0]
+#dinheiro_bots = [1500, 1500, 1500, 1500]
+dinheiro_bots = [500, 500, 500, 500]
 
 print("\nBots na partida:")
 
@@ -81,7 +84,7 @@ tabuleiro = [
     "Sorte",                      # 22
     "Avenida Indiana",            # 23
     "Avenida Illinois",           # 24
-    "Ferrovia B&O",              # 25
+    "Ferrovia B&O",               # 25
     "Avenida Atlantica",          # 26
     "Avenida Ventnor",            # 27
     "Companhia de Agua",          # 28
@@ -278,9 +281,36 @@ print(f"Você parou em: {tabuleiro[posicao]}")
 print("\nCasa atual:")
 print(tabuleiro[posicao])
 
+rodadas_preso = 0
+
 rodada = 1
 
 while rodada <= 200:
+
+    if rodadas_preso > 0:
+
+        print(
+            f"\nVocê está preso!"
+        )
+
+        print(
+            f"Rodadas restantes: "
+            f"{rodadas_preso}"
+        )
+
+        rodadas_preso -= 1
+
+        rodada += 1
+
+        continue
+
+    if dinheiro <= 0:
+
+        print("\n====================")
+        print(f"{nome} FALIU!")
+        print("====================")
+
+        break
 
     print(f"\n===== RODADA {rodada} =====")
 
@@ -333,13 +363,31 @@ while rodada <= 200:
             "Taxa de Luxo"
         )
 
-    if casa == "Vá para a Prisao":
+    if casa == "Prisao" or casa == "Vá para a Prisao":
 
-        posicao = 10
-
-        print(
-            "\nVocê foi para a Prisão!"
+        resultado = random.choice(
+            ["visita", "preso"]
         )
+
+        if resultado == "visita":
+
+            print(
+                "\nApenas visitando a prisão."
+            )
+
+        else:
+
+            posicao = 10
+
+            rodadas_preso = 2
+
+            print(
+                "\nVocê foi PRESO!"
+            )
+
+            print(
+                "Ficará 2 rodadas sem jogar."
+            )
 
     if casa in propriedades:
 
@@ -354,6 +402,8 @@ while rodada <= 200:
             print(f"Preço: ${prop['preco']}")
 
             print(f"Aluguel: ${prop['aluguel']}")
+
+            print(f"Saldo atual: ${dinheiro}")
 
             resposta = input(
                 "Deseja comprar? (s/n): "
@@ -407,10 +457,21 @@ while rodada <= 200:
 
     for i in range(len(bots)):
 
-        if dinheiro_bots[i] <= 0:
+        if preso_bots[i] > 0:
+
+            print(
+                f"{bots[i]} está preso."
+            )
+
+            preso_bots[i] -= 1
+
             continue
 
-        print(f"\n--- VEZ DO {bots[i]} ---")
+        if dinheiro_bots[i] <= 0:
+
+            continue
+
+        print(f"\n--- Vez de {bots[i]} ---")
 
         dado_bot = jogar_dado()
 
@@ -430,13 +491,13 @@ while rodada <= 200:
         
             texto, valor = random.choice(cartas_sorte)
         
-            print(f"\nCARTA SORTE DO {bots[i]}:")
+            print(f"\nCARTA SORTE DE {bots[i]}:")
             print(texto)
         
             dinheiro_bots[i] += valor
         
             print(
-                f"Novo saldo do {bots[i]}: "
+                f"Novo saldo de {bots[i]}: "
                 f"${dinheiro_bots[i]}"
             )
 
@@ -444,13 +505,13 @@ while rodada <= 200:
 
             texto, valor = random.choice(cartas_cofre)
 
-            print(f"\nCARTA COFRE DO {bots[i]}:")
+            print(f"\nCARTA COFRE DE {bots[i]}:")
             print(texto)
 
             dinheiro_bots[i] += valor
 
             print(
-                f"Novo saldo do {bots[i]}: "
+                f"Novo saldo de {bots[i]}: "
                 f"${dinheiro_bots[i]}"
             )
 
@@ -472,13 +533,27 @@ while rodada <= 200:
                 f"$100 de taxa de luxo!"
             )
 
-        if casa_bot == "Vá para a Prisao":
+        if casa_bot in ["Vá para a Prisao", "Prisao"]:
 
-            posicoes_bots[i] = 10
-
-            print(
-                f"{bots[i]} foi para a Prisão!"
+            resultado = random.choice(
+                ["visita", "preso"]
             )
+
+            if resultado == "preso":
+
+                posicoes_bots[i] = 10
+
+                preso_bots[i] = 2
+
+                print(
+                    f"{bots[i]} foi PRESO!"
+                )
+
+            else:
+
+                print(
+                    f"{bots[i]} está apenas visitando."
+                )
 
 
         if casa_bot in propriedades:
@@ -512,8 +587,8 @@ while rodada <= 200:
                 else:
 
                     print(
-                        f"{bots[i]} não tem dinheiro "
-                        f"para comprar {casa_bot}"
+                        f"{bots[i]} não comprou "
+                        f"a {casa_bot}"
                     )
 
 
@@ -561,14 +636,28 @@ while rodada <= 200:
     propriedades
 )
 
+    if dinheiro <= 0:
 
-    print(f"Fim da rodada {rodada}")
+        print("\n====================")
+        print(f"{nome} FALIU!")
+        print("====================")
 
-    ativos = 0
+        ativos = []
 
-    for dinheiro_bot in dinheiro_bots:
-        if dinheiro_bot > 0:
-            ativos += 1
+        for i in range(len(bots)):
+
+            if dinheiro_bots[i] > 0:
+
+                ativos.append(bots[i])
+
+        if len(ativos) > 0:
+
+            print("\n====================")
+            print("TEMOS UM VENCEDOR!")
+            print(f"VENCEDOR: {ativos[0]}")
+            print("====================")
+
+        break
 
     ativos = []
 
@@ -578,7 +667,6 @@ while rodada <= 200:
     for i in range(len(bots)):
 
         if dinheiro_bots[i] > 0:
-
             ativos.append(bots[i])
 
     if len(ativos) == 1:
@@ -586,9 +674,31 @@ while rodada <= 200:
         print("\n====================")
         print("TEMOS UM VENCEDOR!")
         print(f"VENCEDOR: {ativos[0]}")
+
+        if ativos[0] == nome:
+
+            print(
+                f"Patrimônio final: "
+                f"${dinheiro}"
+            )
+
+        else:
+
+            for i in range(len(bots)):
+
+                if bots[i] == ativos[0]:
+
+                    print(
+                        f"Patrimônio final: "
+                        f"${dinheiro_bots[i]}"
+                    )
+
         print("====================")
 
+
         break
+
+    print(f"Fim da rodada {rodada}")
 
     rodada += 1
 
