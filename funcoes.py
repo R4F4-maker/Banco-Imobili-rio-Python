@@ -5,6 +5,25 @@ import random
 def jogar_dado():
     return random.randint(1, 6)
 
+def decidir_compra(tipo, dinheiro, preco):
+
+    if tipo == "louco":
+
+        return dinheiro >= preco
+
+    elif tipo == "investidor":
+
+        return preco >= 150
+
+    elif tipo == "aleatorio":
+
+        return random.choice([True, False])
+
+    elif tipo == "equilibrado":
+
+        return dinheiro - preco >= 150
+
+    return False
 
 def mostrar_placar(
     nome,
@@ -43,3 +62,43 @@ def mostrar_placar(
         print(f"{bot}: FALIU!")
 
     print("==================")
+
+def carta_sorte(dinheiro, cartas_sorte):
+    texto, valor = random.choice(cartas_sorte)
+
+    print("\nCARTA SORTE:")
+    print(texto)
+
+    dinheiro += valor
+
+    print(f"Novo saldo: ${dinheiro}")
+
+    return dinheiro
+
+def carta_cofre(dinheiro, cartas_cofre):
+    texto, valor = random.choice(cartas_cofre)
+
+    print("\nCARTA COFRE:")
+    print(texto)
+
+    dinheiro += valor
+
+    print(f"Novo saldo: ${dinheiro}")
+
+    return dinheiro
+
+def cobrar_taxa(dinheiro, valor, nome_taxa):
+    dinheiro -= valor
+
+    print(
+        f"\nVocê pagou "
+        f"${valor} de {nome_taxa}!"
+    )
+
+    print(
+        f"Novo saldo: "
+        f"${dinheiro}"
+    )
+
+    return dinheiro
+

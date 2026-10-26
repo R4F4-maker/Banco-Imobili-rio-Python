@@ -1,6 +1,13 @@
 import random
 
-from funcoes import jogar_dado, mostrar_placar
+from funcoes import (
+    jogar_dado,
+    mostrar_placar,
+    carta_sorte,
+    carta_cofre,
+    cobrar_taxa,
+    decidir_compra
+)
 
 nomes_disponiveis = [
     "Lucas", "Gabriel", "Pedro", "Miguel", "Arthur",
@@ -17,6 +24,13 @@ nomes_disponiveis = [
 
 bots = random.sample(nomes_disponiveis, 4)
 
+tipos_bots = [
+    "louco",
+    "investidor",
+    "aleatorio",
+    "equilibrado"
+]
+
 nome = input("Digite seu nome: ")
 
 if nome == "":
@@ -31,13 +45,16 @@ print(f"Dinheiro: ${dinheiro}")
 print(f"Posição: {posicao}")
 
 posicoes_bots = [0, 0, 0, 0]
-dinheiro_bots = [500, 500, 500, 500]
+dinheiro_bots = [1500, 1500, 1500, 1500]
 
 print("\nBots na partida:")
 
-for bot in bots:
-    print(bot)
+for i in range(len(bots)):
 
+    print(
+        f"{bots[i]} "
+        f"({tipos_bots[i]})"
+    )
 tabuleiro = [
     "Partida",                    # 0
     "Avenida Mediterranea",       # 1
@@ -149,7 +166,112 @@ propriedades = {
         "preco": 200,
         "aluguel": 80,
         "dono": None
+    },
+
+    "Avenida Kentucky": {
+        "preco": 220,
+        "aluguel": 90,
+        "dono": None
+    },
+
+    "Avenida Indiana": {
+        "preco": 220,
+        "aluguel": 90,
+        "dono": None
+    },
+
+    "Avenida Illinois": {
+        "preco": 240,
+        "aluguel": 100,
+        "dono": None
+    },
+
+    "Avenida Atlantica": {
+        "preco": 260,
+        "aluguel": 110,
+        "dono": None
+    },
+
+    "Avenida Ventnor": {
+        "preco": 260,
+        "aluguel": 110,
+        "dono": None
+    },
+
+    "Jardins Marvin": {
+        "preco": 280,
+        "aluguel": 120,
+        "dono": None
+    },
+
+    "Avenida Pacifica": {
+        "preco": 300,
+        "aluguel": 130,
+        "dono": None
+    },
+
+    "Avenida Carolina do Norte": {
+        "preco": 300,
+        "aluguel": 130,
+        "dono": None
+    },
+
+    "Avenida Pennsylvania": {
+        "preco": 320,
+        "aluguel": 150,
+        "dono": None
+    },
+
+    "Praca Park Place": {
+        "preco": 350,
+        "aluguel": 175,
+        "dono": None
+    },
+
+    "Calcadao Boardwalk": {
+        "preco": 400,
+        "aluguel": 200,
+        "dono": None
+    },
+
+    "Ferrovia Reading": {
+        "preco": 200,
+        "aluguel": 50,
+        "dono": None
+    },
+
+    "Ferrovia Pennsylvania": {
+        "preco": 200,
+        "aluguel": 50,
+        "dono": None
+    },
+
+    "Ferrovia B&O": {
+        "preco": 200,
+        "aluguel": 50,
+        "dono": None
+    },
+
+    "Ferrovia Short Line": {
+        "preco": 200,
+        "aluguel": 50,
+        "dono": None
+    },
+
+    "Companhia Eletrica": {
+    "preco": 150,
+    "aluguel": 40,
+    "dono": None
+    },
+
+    "Companhia de Agua": {
+        "preco": 150,
+        "aluguel": 40,
+        "dono": None
     }
+
+
+
 }
 print(f"Você parou em: {tabuleiro[posicao]}")
 
@@ -186,53 +308,29 @@ while rodada <= 200:
     casa = tabuleiro[posicao]
 
     if casa == "Sorte":
-
-        texto, valor = random.choice(cartas_sorte)
-
-        print("\nCARTA SORTE:")
-        print(texto)
-
-        dinheiro += valor
-
-        print(f"Novo saldo: ${dinheiro}")
-
-    if casa == "Cofre":
-
-        texto, valor = random.choice(cartas_cofre)
-
-        print("\nCARTA COFRE:")
-        print(texto)
-
-        dinheiro += valor
-
-        print(f"Novo saldo: ${dinheiro}")
-
-    if casa == "Imposto de Renda":
-
-        dinheiro -= 200
-
-        print(
-            "\nVocê pagou "
-            "$200 de Imposto de Renda!"
+        dinheiro = carta_sorte(
+            dinheiro,
+            cartas_sorte
         )
 
-        print(
-            f"Novo saldo: "
-            f"${dinheiro}"
+    if casa == "Cofre":
+        dinheiro = carta_cofre(
+            dinheiro,
+            cartas_cofre
+        )
+
+    if casa == "Imposto de Renda":
+        dinheiro = cobrar_taxa(
+            dinheiro,
+            200,
+            "Imposto de Renda"
         )
 
     if casa == "Taxa de Luxo":
-
-        dinheiro -= 100
-
-        print(
-            "\nVocê pagou "
-            "$100 de Taxa de Luxo!"
-        )
-
-        print(
-            f"Novo saldo: "
-            f"${dinheiro}"
+        dinheiro = cobrar_taxa(
+            dinheiro,
+            100,
+            "Taxa de Luxo"
         )
 
     if casa == "Vá para a Prisao":
@@ -249,7 +347,13 @@ while rodada <= 200:
 
         if prop["dono"] is None:
 
-            print("Esta propriedade pode ser comprada!")
+            print("\n===== PROPRIEDADE =====")
+
+            print(f"Nome: {casa}")
+
+            print(f"Preço: ${prop['preco']}")
+
+            print(f"Aluguel: ${prop['aluguel']}")
 
             resposta = input(
                 "Deseja comprar? (s/n): "
@@ -257,11 +361,17 @@ while rodada <= 200:
 
             if resposta == "" or resposta == "s":
 
-                dinheiro -= prop["preco"]
+                if dinheiro >= prop["preco"]:
 
-                prop["dono"] = nome
+                    dinheiro -= prop["preco"]
 
-                print("Propriedade comprada!")
+                    prop["dono"] = nome
+
+                    print("Propriedade comprada!")
+
+                else:
+
+                    print("Dinheiro insuficiente!")
 
         else:
 
@@ -375,11 +485,15 @@ while rodada <= 200:
 
             prop = propriedades[casa_bot]
 
-            
-
             if prop["dono"] is None:
 
-                if dinheiro_bots[i] >= prop["preco"]:
+                comprar = decidir_compra(
+                    tipos_bots[i],
+                    dinheiro_bots[i],
+                    prop["preco"]
+                )
+
+                if comprar and dinheiro_bots[i] >= prop["preco"]:
 
                     prop["dono"] = bots[i]
 
@@ -449,6 +563,32 @@ while rodada <= 200:
 
 
     print(f"Fim da rodada {rodada}")
+
+    ativos = 0
+
+    for dinheiro_bot in dinheiro_bots:
+        if dinheiro_bot > 0:
+            ativos += 1
+
+    ativos = []
+
+    if dinheiro > 0:
+        ativos.append(nome)
+
+    for i in range(len(bots)):
+
+        if dinheiro_bots[i] > 0:
+
+            ativos.append(bots[i])
+
+    if len(ativos) == 1:
+
+        print("\n====================")
+        print("TEMOS UM VENCEDOR!")
+        print(f"VENCEDOR: {ativos[0]}")
+        print("====================")
+
+        break
 
     rodada += 1
 
