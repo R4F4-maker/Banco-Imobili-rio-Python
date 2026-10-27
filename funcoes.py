@@ -168,3 +168,17 @@ def tentativa_prisao(
         tentativas_prisao,
         dinheiro
     )
+
+def possui_grupo_completo(
+    dono,
+    propriedades,
+    grupo
+):
+
+    for propriedade in grupo:
+
+        if propriedades[propriedade]["dono"] != dono:
+            return False
+
+    return True
+

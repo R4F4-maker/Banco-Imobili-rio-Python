@@ -7,7 +7,8 @@ from funcoes import (
     carta_cofre,
     cobrar_taxa,
     decidir_compra,
-    tentativa_prisao
+    tentativa_prisao,
+    possui_grupo_completo
 )
 
 nomes_disponiveis = [
@@ -42,11 +43,11 @@ nome = input("Digite seu nome: ")
 if nome == "":
     nome = "Jogador"
 
-#dinheiro = 1500
-dinheiro = 500
+dinheiro = 1500
+#dinheiro = 500
 
 posicao = 0
-rodadas_preso = 2
+rodadas_preso = 0
 tentativas_prisao = 0
 
 print(f"Jogador: {nome}")
@@ -123,6 +124,54 @@ cartas_cofre = [
     ("Pague conserto da casa $100", -100)
 ]
 
+grupos_cores = {
+    "Marrom": [
+        "Avenida Mediterranea",
+        "Avenida Baltica"
+    ],
+
+    "Azul Claro": [
+        "Avenida Oriental",
+        "Avenida Vermont",
+        "Avenida Connecticut"
+    ],
+
+    "Rosa": [
+        "Praca St. Charles",
+        "Avenida dos Estados",
+        "Avenida Virginia"
+    ],
+
+    "Laranja": [
+        "Praca St. James",
+        "Avenida Tennessee",
+        "Avenida Nova York"
+    ],
+
+    "Vermelho": [
+        "Avenida Kentucky",
+        "Avenida Indiana",
+        "Avenida Illinois"
+    ],
+
+    "Amarelo": [
+        "Avenida Atlantica",
+        "Avenida Ventnor",
+        "Jardins Marvin"
+    ],
+
+    "Verde": [
+        "Avenida Pacifica",
+        "Avenida Carolina do Norte",
+        "Avenida Pennsylvania"
+    ],
+
+    "Azul Escuro": [
+        "Praca Park Place",
+        "Calcadao Boardwalk"
+    ]
+}
+
 propriedades = {
 
     "Avenida Mediterranea": {
@@ -155,6 +204,12 @@ propriedades = {
         "dono": None
     },
 
+    "Praca St. Charles": {
+    "preco": 140,
+    "aluguel": 50,
+    "dono": None
+    },
+
     "Avenida dos Estados": {
         "preco": 140,
         "aluguel": 50,
@@ -165,6 +220,12 @@ propriedades = {
         "preco": 160,
         "aluguel": 60,
         "dono": None
+    },
+
+    "Praca St. James": {
+    "preco": 180,
+    "aluguel": 70,
+    "dono": None
     },
 
     "Avenida Tennessee": {
@@ -309,6 +370,7 @@ while rodada <= 200:
             dinheiro
         )
 
+        jogador_joga = False
 
     else:
 
@@ -448,6 +510,21 @@ while rodada <= 200:
                         prop["dono"] = nome
 
                         print("Propriedade comprada!")
+
+                        for nome_grupo, grupo in grupos_cores.items():
+
+                            if casa in grupo:
+
+                                if possui_grupo_completo(
+                                    nome,
+                                    propriedades,
+                                    grupo
+                                ):
+
+                                    print(
+                                        f"\n🏆 {nome} completou o grupo "
+                                        f"{nome_grupo}!"
+                                    )
 
                     else:
 
@@ -618,6 +695,21 @@ while rodada <= 200:
                     prop["dono"] = bots[i]
 
                     dinheiro_bots[i] -= prop["preco"]
+
+                    for nome_grupo, grupo in grupos_cores.items():
+
+                        if casa_bot in grupo:
+
+                            if possui_grupo_completo(
+                                bots[i],
+                                propriedades,
+                                grupo
+                            ):
+
+                                print(
+                                    f"\n🏆 {bots[i]} completou "
+                                    f"o grupo {nome_grupo}!"
+                                )
 
                     print(
                         f"{bots[i]} comprou "
