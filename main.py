@@ -7,7 +7,8 @@ from funcoes import (
     carta_cofre,
     cobrar_taxa,
     decidir_compra,
-    tentativa_prisao
+    tentativa_prisao,
+    listar_propriedades
 )
 
 nomes_disponiveis = [
@@ -42,11 +43,11 @@ nome = input("Digite seu nome: ")
 if nome == "":
     nome = "Jogador"
 
-#dinheiro = 1500
-dinheiro = 500
+dinheiro = 1500
+#dinheiro = 500
 
 posicao = 0
-rodadas_preso = 2
+rodadas_preso = 0
 tentativas_prisao = 0
 
 print(f"Jogador: {nome}")
@@ -67,7 +68,7 @@ for i in range(len(bots)):
         f"({tipos_bots[i]})"
     )
 tabuleiro = [
-    "Partida",                    # 0
+    "Início",                     # 0
     "Avenida Mediterranea",       # 1
     "Cofre",                      # 2
     "Avenida Baltica",            # 3
@@ -191,6 +192,12 @@ propriedades = {
         "dono": None
     },
 
+    "Praca St. Charles": {
+    "preco": 140,
+    "aluguel": 50,
+    "dono": None
+    },
+
     "Avenida Illinois": {
         "preco": 240,
         "aluguel": 100,
@@ -281,10 +288,7 @@ propriedades = {
         "dono": None
     }
 
-
-
 }
-print(f"Você parou em: {tabuleiro[posicao]}")
 
 print("\nCasa atual:")
 print(tabuleiro[posicao])
@@ -678,6 +682,12 @@ while rodada <= 200:
     dinheiro,
     bots,
     dinheiro_bots,
+    propriedades
+)
+
+    listar_propriedades(
+    nome,
+    bots,
     propriedades
 )
 

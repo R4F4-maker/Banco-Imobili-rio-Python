@@ -168,3 +168,49 @@ def tentativa_prisao(
         tentativas_prisao,
         dinheiro
     )
+
+def listar_propriedades(
+    nome,
+    bots,
+    propriedades
+):
+
+    print("\n===== PROPRIEDADES =====\n")
+
+    donos = {}
+
+    for propriedade in propriedades:
+
+        dono = propriedades[propriedade]["dono"]
+
+        if dono is not None:
+
+            if dono not in donos:
+
+                donos[dono] = []
+
+            donos[dono].append(propriedade)
+
+    if len(donos) == 0:
+
+        print("Nenhuma propriedade comprada.")
+
+    else:
+
+        if nome in donos:
+
+            print(
+                f"{nome}: "
+                f"{', '.join(donos[nome])}"
+            )
+
+        for bot in bots:
+
+            if bot in donos:
+
+                print(
+                    f"{bot}: "
+                    f"{', '.join(donos[bot])}"
+                )
+
+    print("\n========================")
